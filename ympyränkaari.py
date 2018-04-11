@@ -67,6 +67,16 @@ class Annulus(object):
         # print('end')
         return points
 
+    def jump(self, angle, distance, unit='degrees'):
+        if unit.lower() == 'radians':
+            angle = math.degrees(angle)
+
+            pos_x_delta = self.pos_x + math.sin(angle) * distance
+            pos_y_delta = self.pos_y + math.cos(angle) * distance
+
+            return Point(pos_x_delta, pos_y_delta)
+
+
 def drawPoints(instance, window):
     for i in instance.points:
         temp = Point(*i)
