@@ -38,75 +38,41 @@ def saaKulma(oikea_piste, kärkipiste, vasen_piste):
     return kulma
 
 
-kulmien_määrä = 15
 
-kulmien_summa = (kulmien_määrä - 2) * 180
 
-sivut = [i * 5 for i in range(kulmien_määrä - 1, 2 * kulmien_määrä - 1)]
+konna = konna.Konna(window_dim_x=2000, window_dim_y=1000, framerate=10, no_bounds=True)
 
-print(sivut)
-
-konna = konna.Konna(window_dim_x=1000, window_dim_y=1000, framerate=3, no_bounds=True)
-# konna.penDown()
-
-# angle = random.randint(sisäkulma - sisäkulma / 2, siskulma + sisäkulma / 2)
-
-edelliset = [(0, 0), (0, 10)]
-
-total = 360
-
-sisäkulma = kulmien_summa / kulmien_määrä
-
-counter = 0
-kerroin = 1
 
 konna.penDown()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 konna.penUp()
 konna.goTo(-250, 0)
 konna.penDown()
 
 while True:
-    sivu = sivut[random.randint(0, len(sivut) - 1)]
-    käännettävä = 180 - sisäkulma - (sivu ** 1.1 / (5 * kulmien_määrä))
 
-    print(sivu, etäisyysNäytöllä((0, 0), konna.dryRun(käännettävä, sivu)), sum(sivut), sivut, etäisyysNäytöllä((0, 0), (konna.pos_x, konna.pos_y)))
+    alkamis_x = random.randint(-750, 750)
+    alkamis_y = random.randint(-250, 250)
 
-    # if etäisyysNäytöllä((0, 0), konna.dryRun(käännettävä, sivu)) <= sum(sivut):
-    konna.orientation = konna.orientation + käännettävä
-    konna.move(sivu)
-    sivut.remove(sivu)
+    konna.penUp()
+    konna.goTo(alkamis_x, alkamis_y)
+    konna.penDown()
+
+    kulmien_määrä = random.randint(3, 10)
+
+    kulmien_summa = (kulmien_määrä - 2) * 180
+
+    sisäkulma = kulmien_summa / kulmien_määrä
+
+    sivut = [i * 10 for i in range(kulmien_määrä - 1, 2 * kulmien_määrä - 1)]
+
+    while True:
+        sivu = sivut[random.randint(0, len(sivut) - 1)]
+        käännettävä = 180 - sisäkulma - (sivu ** 1.1 / (5 * kulmien_määrä))
+
+        konna.orientation = konna.orientation + käännettävä
+        konna.move(sivu)
+        sivut.remove(sivu)
 
 
 
@@ -114,6 +80,7 @@ while True:
 
 
 
-    if len(sivut) == 1:
-        konna.goTo(-250, 0)
-        break
+        if len(sivut) == 1:
+            sivut = []
+            konna.goTo(alkamis_x, alkamis_y)
+            break
