@@ -1,10 +1,8 @@
+import random
 import konna
 import math
-from ympyränkaari import *
-import random
-from graphics import *
-import time
-import copy
+from graphics import Point
+import os
 
 def etäisyysNäytöllä(piste_1, piste_2):
     pos_1_x, pos_1_y, pos_2_x, pos_2_y = 0, 0, 0, 0
@@ -26,12 +24,12 @@ def etäisyysNäytöllä(piste_1, piste_2):
     pos_x_delta = abs(pos_2_x - pos_1_x)
     pos_y_delta = abs(pos_2_y - pos_1_y)
 
-    return math.sqrt(pos_x_delta ** 2 + pos_y_delta ** 2)
+    return int(math.hypot(pos_y_delta, pos_y_delta))
 
 def listasta(lista, indeksi):
     return [lista[indeksi - 1], lista[indeksi], lista[(indeksi + 1) % len(lista)]]
 
-def kulma(oikea_piste, kärkipiste, vasen_piste):
+def saaKulma(oikea_piste, kärkipiste, vasen_piste):
     A = etäisyysNäytöllä(oikea_piste, kärkipiste)
     B = etäisyysNäytöllä(vasen_piste, kärkipiste)
     C = etäisyysNäytöllä(oikea_piste, vasen_piste)
@@ -39,49 +37,83 @@ def kulma(oikea_piste, kärkipiste, vasen_piste):
     kulma = math.degrees(math.acos((A * A + B * B - C * C)/(2.0 * A * B)))
     return kulma
 
-kulmien_määrä = 10
 
-sivut = [i * 10 for i in range(kulmien_määrä - 1, 2 * kulmien_määrä - 1)]
+kulmien_määrä = 15
 
-s = copy.deepcopy(sivut)
+kulmien_summa = (kulmien_määrä - 2) * 180
 
-a = Annulus(0, 0, sivut.pop(random.randint(0, len(sivut) - 1)))
+sivut = [i * 5 for i in range(kulmien_määrä - 1, 2 * kulmien_määrä - 1)]
 
-piste = None
+print(sivut)
 
-pisteet = [Point(0, 0)]
+konna = konna.Konna(window_dim_x=1000, window_dim_y=1000, framerate=3, no_bounds=True)
+# konna.penDown()
 
-while sivut:
-    indeksi = random.randint(0, len(a.points) - 1)
+# angle = random.randint(sisäkulma - sisäkulma / 2, siskulma + sisäkulma / 2)
 
-    piste = Point(*a.points[indeksi])
+edelliset = [(0, 0), (0, 10)]
 
-    try:
-        # print(kulma(piste, pisteet[-1], pisteet[-2]))
-        if kulma(piste, pisteet[-1], pisteet[-2]) > 180:
-            piste = None
-    except:
-        pass
+total = 360
 
-    if int(etäisyysNäytöllä(piste, (0, 0))) >= sum(sivut):
-        piste = None
+sisäkulma = kulmien_summa / kulmien_määrä
 
-    if piste is not None:
-        pisteet.append(piste)
-        a = Annulus(piste.x, piste.y, sivut.pop(random.randint(0, len(sivut) - 1)))
+counter = 0
+kerroin = 1
 
-pisteet.append(pisteet[0])
-
-print(etäisyysNäytöllä(pisteet[-1], pisteet[-2]))
-print(s)
-# quit()
-
-a = GraphWin('Matcup', 1000, 1000)
-for i in range(len(pisteet)):
-    line = Line(pisteet[i], pisteet[(i + 1) % len(pisteet)])
-    line.move(a.getWidth() / 2, a.getHeight() / 2)
-    line.draw(a)
-    # time.sleep(1)
+konna.penDown()
 
 
-input()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+konna.penUp()
+konna.goTo(-250, 0)
+konna.penDown()
+
+while True:
+    sivu = sivut[random.randint(0, len(sivut) - 1)]
+    käännettävä = 180 - sisäkulma - (sivu ** 1.1 / (5 * kulmien_määrä))
+
+    print(sivu, etäisyysNäytöllä((0, 0), konna.dryRun(käännettävä, sivu)), sum(sivut), sivut, etäisyysNäytöllä((0, 0), (konna.pos_x, konna.pos_y)))
+
+    # if etäisyysNäytöllä((0, 0), konna.dryRun(käännettävä, sivu)) <= sum(sivut):
+    konna.orientation = konna.orientation + käännettävä
+    konna.move(sivu)
+    sivut.remove(sivu)
+
+
+
+
+
+
+
+    if len(sivut) == 1:
+        konna.goTo(-250, 0)
+        break

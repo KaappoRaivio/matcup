@@ -95,6 +95,41 @@ class Konna:
         self.drawSelf()
         self.update()
 
+    def jumpDryRun(self, x, y):
+        return Point(self.pos_x + x, self.pos_y + y)
+
+    def moveDryRun(self, distance):
+        return Point(self.pos_x + round(math.sin(math.radians(self.orientation)) * distance, 0), self.pos_y - round(math.cos(math.radians(self.orientation)) * distance, 0))
+
+    def dryRun(self, angle, distance):
+        return Point(self.pos_x + round(math.sin(math.radians(self.orientation + angle)) * distance, 0), self.pos_y - round(math.cos(math.radians(self.orientation + angle)) * distance, 0))
+
+
+
+    def goTo(self, x, y):
+        if self.pen_down:
+            line_start_pos = self.position
+
+            self.pos_x = x
+            self.pos_y = y
+
+            line_end_pos = self.position
+
+            line = Line(line_start_pos, line_end_pos)
+            line.setFill(self.line_color)
+            line.setWidth(self.__line_width)
+
+            line.draw(self.window)
+
+        else:
+            self.pos_x += x
+            self.pos_y += y
+
+        self.drawSelf()
+        self.update()
+
+
+
     @property
     def circle(self):
         cir = Circle(self.position, 5)
