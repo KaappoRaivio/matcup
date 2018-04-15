@@ -1,3 +1,5 @@
+
+
 import random
 import konna
 import math
@@ -38,9 +40,7 @@ def saaKulma(oikea_piste, kärkipiste, vasen_piste):
     return kulma
 
 
-
-
-konna = konna.Konna(window_dim_x=2000, window_dim_y=1000, framerate=10, no_bounds=True)
+konna = konna.Konna(window_dim_x=1920, window_dim_y=1080, framerate=2, no_bounds=True)
 
 
 konna.penDown()
@@ -48,17 +48,23 @@ konna.penDown()
 konna.penUp()
 konna.goTo(-250, 0)
 konna.penDown()
+konna.line_width = 10
+
+input()
 
 while True:
 
-    alkamis_x = random.randint(-750, 750)
-    alkamis_y = random.randint(-250, 250)
+    alkamis_x = random.randint(-konna.window.getWidth() / 2, konna.window.getWidth() / 2)
+    print(-konna.window.getWidth() / 2)
+    alkamis_y = random.randint(-konna.window.getHeight() / 2, konna.window.getHeight() / 2)
+
 
     konna.penUp()
+    konna.line_color = ['blue', 'green', 'red', 'yellow', 'orange', 'purple'][random.randint(0, 5)]
     konna.goTo(alkamis_x, alkamis_y)
     konna.penDown()
 
-    kulmien_määrä = random.randint(3, 10)
+    kulmien_määrä = random.randint(3, 8)
 
     kulmien_summa = (kulmien_määrä - 2) * 180
 
@@ -70,14 +76,18 @@ while True:
         sivu = sivut[random.randint(0, len(sivut) - 1)]
         käännettävä = 180 - sisäkulma - (sivu ** 1.1 / (5 * kulmien_määrä))
 
+        if len(sivut) == 2:
+            käännettävä += 5
+
+        if len(sivut) == 3:
+            käännettävä += 5
+
+        if len(sivut) == 4:
+            käännettävä += 5
+
         konna.orientation = konna.orientation + käännettävä
         konna.move(sivu)
         sivut.remove(sivu)
-
-
-
-
-
 
 
         if len(sivut) == 1:
