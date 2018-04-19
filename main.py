@@ -1,7 +1,7 @@
 
 
 import random
-import konna
+import konnamod
 import math
 from graphics import Point
 import os
@@ -40,7 +40,7 @@ def saaKulma(oikea_piste, kärkipiste, vasen_piste):
     return kulma
 
 
-konna = konna.Konna(window_dim_x=1920, window_dim_y=1080, framerate=2, no_bounds=True)
+konna = konnamod.Konna(window_dim_x=1920, window_dim_y=1080, framerate=30, no_bounds=True)
 
 
 konna.penDown()
@@ -48,11 +48,23 @@ konna.penDown()
 konna.penUp()
 konna.goTo(-250, 0)
 konna.penDown()
-konna.line_width = 10
+konna.line_width = 5
 
-input()
-
+# input()
+laskuri = 0
 while True:
+    laskuri += 1
+
+    if laskuri == 50:
+        laskuri = 0
+        konna.window.close()
+        # del konna
+        konna = konnamod.Konna(window_dim_x=1920, window_dim_y=1080, framerate=30, no_bounds=True)
+        konna.penUp()
+        konna.goTo(-250, 0)
+        konna.penDown()
+        konna.line_width = 5
+
 
     alkamis_x = random.randint(-konna.window.getWidth() / 2, konna.window.getWidth() / 2)
     print(-konna.window.getWidth() / 2)
