@@ -40,7 +40,7 @@ def saaKulma(oikea_piste, kärkipiste, vasen_piste):
     return kulma
 
 
-konna = konnamod.Konna(window_dim_x=1920, window_dim_y=1080, framerate=30, no_bounds=True)
+konna = konnamod.Konna(window_dim_x=1920, window_dim_y=1080, framerate=60, no_bounds=True)
 
 
 konna.penDown()
@@ -59,7 +59,7 @@ while True:
         laskuri = 0
         konna.window.close()
         # del konna
-        konna = konnamod.Konna(window_dim_x=1920, window_dim_y=1080, framerate=30, no_bounds=True)
+        konna = konnamod.Konna(window_dim_x=1920, window_dim_y=1080, framerate=60, no_bounds=True)
         konna.penUp()
         konna.goTo(-250, 0)
         konna.penDown()
